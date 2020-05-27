@@ -72,10 +72,6 @@ async function run() {
       }
       core.info(`stdout: ${stdout}`);
     });
-	  #IMAGE_TAG=$(find '.' -name version.sbt | head -n1 | xargs grep ':=' | sed 's/.*"\(.*\)".*/\1/')
-	  #docker tag $SERVICE_NAME:$IMAGE_TAG $ECR_URI:$ENV
-	  #docker push $ECR_URI:$ENV
-
 
   } catch (error) {
     core.setFailed(error.message);
