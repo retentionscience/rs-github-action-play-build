@@ -45,9 +45,10 @@ async function run() {
     var fs = require('fs');
     var versionstr = fs.readFileSync('version.sbt', 'utf8');
     core.info(`Found versionstr: ${versionstr}`)
-    var version = versionstr.split(" : = ")[1];
+    var version = versionstr.split(" := ")[1];
+    core.info(`Found quoted version: ${version}`)
     version = version.replace(/"/g, "");
-    core.info(`Found version: ${version}`)
+    core.info(`Final version: ${version}`)
 
 
 
