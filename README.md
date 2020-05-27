@@ -1,4 +1,4 @@
-## Amazon ECS Redeploy Action for GitHub Actions
+## Amazon ECS build and push play apps for GitHub Actions
 
 Redeploys a service in an ECS cluster
 
