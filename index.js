@@ -4,13 +4,18 @@ const aws = require("aws-sdk");
 
 async function run() {
   try {
-    var ecrRegistry = core.getInput("ecr_registry", { required: false });
+    var ecrUri = core.getInput("ecr_uri", { required: false });
     var env = core.getInput("env", { required: false });
     var serviceName = core.getInput("service_name", { required: false });
 
-    if (ecrRegistry == "") {
-       ecr_uri=process.env.ECR_REPOSITORY+"/"+serviceName
-    } else {
+    if (env == "") {
+       env=process.env.ENV;
+    }
+    if (serviceName == "") {
+       serviceName=process.env.GITHUB_REPOSITORY.split('/')[1];
+    }
+
+    if (ecrUri == "") {
        core.debug(`Describing ECR for ${serviceName}`);
        const ecr = new aws.ECR();
        const params = {
@@ -18,12 +23,6 @@ async function run() {
        };
        var ecr_data = await ecr.describeRepositories(params).promise();
        var ecr_uri = ecr_data.repositories[0].repositoryUri
-    }
-    if (env == "") {
-       env=process.env.ENV;
-    }
-    if (serviceName == "") {
-       serviceName=process.env.GITHUB_REPOSITORY.split('/')[1];
     }
 
     core.info(`Starting build with env:${env} service:${serviceName} ecr_uri:${ecr_uri}`);
