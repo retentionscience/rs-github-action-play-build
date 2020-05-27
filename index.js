@@ -26,7 +26,7 @@ async function run() {
        serviceName=process.env.GITHUB_REPOSITORY.split('/')[1];
     }
 
-    core.info(`Starting build with env:${env} service:${serviceName} ecr:${ecr_uri}`);
+    core.info(`Starting build with env:${env} service:${serviceName} ecr_uri:${ecr_uri}`);
 
 
     const { exec } = require("child_process");
@@ -42,6 +42,39 @@ async function run() {
       }
       core.info(`stdout: ${stdout}`);
     });
+
+    var fs = require('fs');
+    var versionsbt = fs.readFile('version.sbt', 'utf8');
+    var version = versionsbt.split(" : = ").replace(/"/g,"");
+    core.info(`Found version: ${version}`)
+
+
+
+    exec("docker tag ${serviceName}:${version} ${ecr_uri}:${env}", (error, stdout, stderr) => {
+      if (error) {
+        core.info(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        core.info(`stderr: ${stderr}`);
+        return;
+      }
+      core.info(`stdout: ${stdout}`);
+    });
+    exec("docker push ${ecr_uri}:${env}", (error, stdout, stderr) => {
+      if (error) {
+        core.info(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        core.info(`stderr: ${stderr}`);
+        return;
+      }
+      core.info(`stdout: ${stdout}`);
+    });
+	  #IMAGE_TAG=$(find '.' -name version.sbt | head -n1 | xargs grep ':=' | sed 's/.*"\(.*\)".*/\1/')
+	  #docker tag $SERVICE_NAME:$IMAGE_TAG $ECR_URI:$ENV
+	  #docker push $ECR_URI:$ENV
 
 
   } catch (error) {
