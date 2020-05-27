@@ -1,0 +1,38 @@
+{
+  "name": "rs-actions-rs-play-build",
+  "version": "1.0.0",
+  "description": "Build and push play apps",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint **.js",
+    "package": "ncc build index.js -o dist",
+    "test": "eslint **.js && jest --coverage --passWithNoTests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/retentionscience/rs-github-action-play-build.git"
+  },
+  "keywords": [
+    "AWS",
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
+  "author": "RS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/retentionscience/rs-github-action-play-build/issues"
+  },
+  "homepage": "https://github.com/retentionscience/rs-github-action-play-build#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "aws-sdk": "^2.679.0",
+    "prettier": "^2.0.5"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.2",
+    "eslint": "^7.0.0",
+    "jest": "^26.0.1"
+  }
+}

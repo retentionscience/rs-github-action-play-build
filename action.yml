@@ -3,5 +3,20 @@ description: "Builds and pushes a play app"
 branding:
   icon: "cloud"
   color: "orange"
+inputs:
+  service:
+    description: "The name of an ECS service. (default: taken from $GITHUB_REPOSITORY)"
+    required: false
+  ecr_registry:
+    description: "ECR, will query for the URI"
+    required: false
+  env:
+    description: "Terraform environment"
+    required: false
+outputs:
+  status:
+    description: "Return status of ECS update command"
 runs:
-  main: "run.sh"
+  using: "node12"
+  main: "dist/index.js"
+
