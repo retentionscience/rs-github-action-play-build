@@ -46,7 +46,7 @@ async function run() {
     var versionstr = fs.readFileSync('version.sbt', 'utf8');
     core.info(`Found versionstr: ${versionstr}`)
     var version = versionstr.split(" : = ");
-    version = version.replace(/\"/g, "");
+    version = version.toString().replace(/"/g, "");
     core.info(`Found version: ${version}`)
 
 
