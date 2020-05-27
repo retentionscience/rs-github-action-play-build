@@ -28,19 +28,16 @@ async function run() {
     core.info(`Starting build with env:${env} service:${serviceName} ecr_uri:${ecr_uri}`);
 
 
-    const { exec } = require("child_process");
+    const { spawnSync } = require("child_process");
 
-    exec("sbt docker:publishLocal", (error, stdout, stderr) => {
-      if (error) {
-        core.info(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        core.info(`stderr: ${stderr}`);
-        return;
-      }
-      core.info(`stdout: ${stdout}`);
-    });
+    var sbt = spawnSync("sbt",["docker:publishLocal"]);
+    core.info(`stderr: ${sbt.stderr}`);
+    core.info(`stdout: ${sbt.stdout}`);
+    if (sbt.status != 0) {
+        core.setFailed('sbt docker:publishLocal errored.');
+	return;
+    }
+
 
     var fs = require('fs');
     var versionstr = fs.readFileSync('version.sbt', 'utf8');
@@ -51,29 +48,22 @@ async function run() {
     core.info(`Final version: ${version}`)
 
 
+    var tag = spawnSync("docker",['tag',`${serviceName}:${version}`,`${ecr_uri}:${env}`]);
+    core.info(`stderr: ${tag.stderr}`);
+    core.info(`stdout: ${tag.stdout}`);
+    if (tag.status != 0) {
+        core.setFailed(`docker tag ${serviceName}:${version} ${ecr_uri}:${env} errored.`);
+	return;
+    }
 
-    exec(`docker tag ${serviceName}:${version} ${ecr_uri}:${env}`, (error, stdout, stderr) => {
-      if (error) {
-        core.info(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        core.info(`stderr: ${stderr}`);
-        return;
-      }
-      core.info(`stdout: ${stdout}`);
-    });
-    exec(`docker push ${ecr_uri}:${env}`, (error, stdout, stderr) => {
-      if (error) {
-        core.info(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        core.info(`stderr: ${stderr}`);
-        return;
-      }
-      core.info(`stdout: ${stdout}`);
-    });
+    var push = spawnSync("docker",['push',`${ecr_uri}:${env}`]);
+    core.info(`stderr: ${push.stderr}`);
+    core.info(`stdout: ${push.stdout}`);
+    if (push.status != 0) {
+        core.setFailed(`docker push ${ecr_uri}:${env} errored.`);
+	return;
+    }
+
 
   } catch (error) {
     core.setFailed(error.message);
