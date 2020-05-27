@@ -31,36 +31,49 @@ async function run() {
     const { spawnSync } = require("child_process");
 
     var sbt = spawnSync("sbt",["docker:publishLocal"]);
-    core.info(`stderr: ${sbt.stderr}`);
-    core.info(`stdout: ${sbt.stdout}`);
+    if (sbt.stderr) {
+      core.info(`stderr: ${sbt.stderr}`);
+    }
+    if (sbt.stdout) {
+      core.info(`stdout: ${sbt.stdout}`);
+    }
     if (sbt.status != 0) {
-        core.setFailed('sbt docker:publishLocal errored.');
+        core.setFailed(`sbt docker:publishLocal returned ${sbt.status}`);
 	return;
     }
 
 
     var fs = require('fs');
     var versionstr = fs.readFileSync('version.sbt', 'utf8');
-    core.info(`Found versionstr: ${versionstr}`)
     var version = versionstr.split(" := ")[1];
-    core.info(`Found quoted version: ${version}`)
     version = version.replace(/"/g, "");
-    core.info(`Final version: ${version}`)
+    core.info(`Found version: ${version}`)
 
 
+    core.info(`Spawning: docker tag ${serviceName}:${version} ${ecr_uri}:${env}`);
     var tag = spawnSync("docker",['tag',`${serviceName}:${version}`,`${ecr_uri}:${env}`]);
-    core.info(`stderr: ${tag.stderr}`);
-    core.info(`stdout: ${tag.stdout}`);
+    if (tag.stderr) {
+      core.info(`stderr: ${tag.stderr}`);
+    }
+    if (tag.stdout) {
+      core.info(`stdout: ${tag.stdout}`);
+    }
     if (tag.status != 0) {
-        core.setFailed(`docker tag ${serviceName}:${version} ${ecr_uri}:${env} errored.`);
+        core.setFailed(`docker tag ${serviceName}:${version} ${ecr_uri}:${env} returned ${tag.status}.`);
 	return;
     }
 
+
+    core.info(`Spawning: docker push ${ecr_uri}:${env}`);
     var push = spawnSync("docker",['push',`${ecr_uri}:${env}`]);
-    core.info(`stderr: ${push.stderr}`);
-    core.info(`stdout: ${push.stdout}`);
+    if (push.stderr) {
+      core.info(`stderr: ${push.stderr}`);
+    }
+    if (push.stdout) {
+      core.info(`stdout: ${push.stdout}`);
+    }
     if (push.status != 0) {
-        core.setFailed(`docker push ${ecr_uri}:${env} errored.`);
+        core.setFailed(`docker push ${ecr_uri}:${env} returned ${push.status}`);
 	return;
     }
 
