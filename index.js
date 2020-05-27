@@ -52,7 +52,7 @@ async function run() {
 
 
 
-    exec("docker tag ${serviceName}:${version} ${ecr_uri}:${env}", (error, stdout, stderr) => {
+    exec(`docker tag ${serviceName}:${version} ${ecr_uri}:${env}`, (error, stdout, stderr) => {
       if (error) {
         core.info(`error: ${error.message}`);
         return;
@@ -63,7 +63,7 @@ async function run() {
       }
       core.info(`stdout: ${stdout}`);
     });
-    exec("docker push ${ecr_uri}:${env}", (error, stdout, stderr) => {
+    exec(`docker push ${ecr_uri}:${env}`, (error, stdout, stderr) => {
       if (error) {
         core.info(`error: ${error.message}`);
         return;
