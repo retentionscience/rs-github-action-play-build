@@ -23,7 +23,8 @@ Redeploys a service in an ECS cluster
           ENV: 'stg'
 ```
 
-SERVICE_NAME is optional if it's the same name as the github repository.
+* SERVICE_NAME is optional if it matches the name of the github repository.
+* ECR_REGISTRY is optional if the ECR matches the service_name.
 
 ## License Summary
 
