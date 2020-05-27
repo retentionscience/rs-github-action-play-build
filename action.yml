@@ -1,0 +1,7 @@
+name: "Retention Science build play apps for Github Actions"
+description: "Builds and pushes a play app"
+branding:
+  icon: "cloud"
+  color: "orange"
+runs:
+  main: "run.sh"
