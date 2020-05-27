@@ -1,8 +1,6 @@
 const core = require("@actions/core");
 const aws = require("aws-sdk");
 
-const MAX_WAIT_MINUTES = 360; // 6 hours
-const WAIT_DEFAULT_DELAY_SEC = 15;
 
 async function run() {
   try {
@@ -14,7 +12,7 @@ async function run() {
        ecr_uri=process.env.ECR_REPOSITORY+"/"+serviceName
     } else {
        core.debug(`Describing ECR for ${serviceName}`);
-       const ecs = new aws.ECR();
+       const ecr = new aws.ECR();
        const params = {
          repositoryNames: [serviceName]
        };
