@@ -31,12 +31,8 @@ async function run() {
     const { spawnSync } = require("child_process");
 
     var sbt = spawnSync("sbt",["docker:publishLocal"]);
-    if (sbt.stderr) {
-      core.info(`stderr: ${sbt.stderr}`);
-    }
-    if (sbt.stdout) {
-      core.info(`stdout: ${sbt.stdout}`);
-    }
+    core.info(`stderr: ${sbt.stderr}`);
+    core.info(`stdout: ${sbt.stdout}`);
     if (sbt.status != 0) {
         core.setFailed(`sbt docker:publishLocal returned ${sbt.status}`);
 	return;
@@ -52,12 +48,8 @@ async function run() {
 
     core.info(`Spawning: docker tag ${serviceName}:${version} ${ecr_uri}:${env}`);
     var tag = spawnSync("docker",['tag',`${serviceName}:${version}`,`${ecr_uri}:${env}`]);
-    if (tag.stderr) {
-      core.info(`stderr: ${tag.stderr}`);
-    }
-    if (tag.stdout) {
-      core.info(`stdout: ${tag.stdout}`);
-    }
+    core.info(`stderr: ${tag.stderr}`);
+    core.info(`stdout: ${tag.stdout}`);
     if (tag.status != 0) {
         core.setFailed(`docker tag ${serviceName}:${version} ${ecr_uri}:${env} returned ${tag.status}.`);
 	return;
@@ -66,12 +58,8 @@ async function run() {
 
     core.info(`Spawning: docker push ${ecr_uri}:${env}`);
     var push = spawnSync("docker",['push',`${ecr_uri}:${env}`]);
-    if (push.stderr) {
-      core.info(`stderr: ${push.stderr}`);
-    }
-    if (push.stdout) {
-      core.info(`stdout: ${push.stdout}`);
-    }
+    core.info(`stderr: ${push.stderr}`);
+    core.info(`stdout: ${push.stdout}`);
     if (push.status != 0) {
         core.setFailed(`docker push ${ecr_uri}:${env} returned ${push.status}`);
 	return;
