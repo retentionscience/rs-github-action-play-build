@@ -17,14 +17,14 @@ Redeploys a service in an ECS cluster
      - name: Build Play App
         id: build-app
         uses: retentionscience/rs-github-action-play-build
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          SERVICE_NAME: 'rate-limit-service',
-          ENV: 'stg'
+        with:
+          env: stg
+          ecr_uri: 123456789.dkr.ecr.us-east-1.amazonaws.com/rate-limit-service
+          service_name: rate-limit-service
 ```
-
-* SERVICE_NAME is optional if it matches the name of the github repository.
-* ECR_REGISTRY is optional if the ECR matches the service_name.
+* env is optional, $ENV is used instead.
+* service_name is optional, otherwise derived from $GITHUB_REPOSITORY.
+* ecr_uri is optional, otherwise derived from describing repo named for the service.
 
 ## License Summary
 
