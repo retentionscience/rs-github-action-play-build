@@ -43,13 +43,7 @@ async function run() {
     });
 
     var fs = require('fs');
-    var versionstr = fs.readFile('version.sbt', 'utf8', (error, data) => { 
-      if (error) {
-        core.info(`error: ${error.message}`);
-        return;
-      }
-      core.debug(data); 
-    });
+    var versionstr = fs.readFileSync('version.sbt');
     var version = versionstr.split(" : = ").replace(/"/g,"");
     core.info(`Found version: ${version}`)
 
