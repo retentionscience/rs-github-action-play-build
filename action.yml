@@ -13,10 +13,6 @@ inputs:
   env:
     description: "Terraform environment"
     required: false
-outputs:
-  status:
-    description: "Return status of ECS update command"
 runs:
   using: "node12"
   main: "dist/index.js"
-
