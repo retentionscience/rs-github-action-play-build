@@ -6,7 +6,7 @@ async function run() {
   try {
     var ecrUri = core.getInput("ecr_uri", { required: false });
     var env = core.getInput("env", { required: false });
-    var serviceName = core.getInput("service_name", { required: false });
+    var serviceName = core.getInput("service", { required: false });
 
     if (env == "") {
        env=process.env.ENV;

@@ -20,10 +20,10 @@ Redeploys a service in an ECS cluster
         with:
           env: stg
           ecr_uri: 123456789.dkr.ecr.us-east-1.amazonaws.com/rate-limit-service
-          service_name: rate-limit-service
+          service: rate-limit-service
 ```
 * env is optional, $ENV is used instead.
-* service_name is optional, otherwise derived from $GITHUB_REPOSITORY.
+* service is optional, otherwise derived from $GITHUB_REPOSITORY.
 * ecr_uri is optional, otherwise derived from describing repo named for the service.
 
 ## License Summary
