@@ -1,0 +1,49 @@
+#!/bin/bash
+
+exiting_loop=0
+
+term_handler() {
+  echo "TERM trapped."
+  echo "Cancelling schedulers."
+  curl --silent http://localhost:9000/deployment/cancel_schedulers
+  exiting_loop=1
+}
+
+
+
+trap term_handler TERM
+
+echo "$@"
+"$@" &
+childpid=$!
+wait $childpid # wait returns when the child exits, or we get a SIGTERM.
+echo "After wait"
+
+if ! kill -0 $childpid;then
+   echo "Child exited. Bye."
+   exit 0
+fi
+
+if [ $exiting_loop == 1 ];then
+   while true;do
+     sleep 15
+     response=$(curl --silent http://localhost:9000/deployment/scheduler_heart_beats_stopped)
+     exitcode=$?
+     if [ $exitcode != 0 ];then
+	echo "curl exited $exitcode, response: $response"
+        echo "Curl exited non-zero. Will kill CMD process."
+        kill $childpid
+        sleep 15
+        kill -9 $childpid
+        exit
+     fi
+    
+     if echo "$response" | grep '"status":"true"' ;then
+        echo "schedulers stopped gracefully."
+        echo "Time to exit."
+        exit 0
+     else
+        echo "Scheduler still running."
+     fi
+   done
+fi

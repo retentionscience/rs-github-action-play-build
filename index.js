@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const aws = require("aws-sdk");
+const fs = require("fs");
 
 
 async function run() {
@@ -26,6 +27,9 @@ async function run() {
     }
 
     core.info(`Starting build with env:${env} service:${serviceName} ecr_uri:${ecr_uri}`);
+
+
+    fs.copyFileSync('/retentionscience/rs-github-action-play-build/scheduler-entrypoint', 'conf/scheduler-entrypoint');
 
 
     const { spawnSync } = require("child_process");
