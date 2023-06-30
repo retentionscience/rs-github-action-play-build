@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/retentionscience/rs-github-action-play-build#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "@actions/exec": "^1.0.4",
-    "aws-sdk": "^2.679.0",
+    "aws-sdk": "^2.1408.0",
     "prettier": "^2.0.5"
   },
   "devDependencies": {
