@@ -43,7 +43,6 @@ async function run() {
     }
 
 
-    var fs = require('fs');
     var versionstr = fs.readFileSync('version.sbt', 'utf8');
     var version = versionstr.split(" := ")[1];
     version = version.replace(/"/g, "");
