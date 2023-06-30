@@ -18,7 +18,7 @@ jobs:
         id: setup-node
         uses: actions/setup-node@v3
         with:
-          node-version: stable
+          node-version: 18.16
 
       - name: Package
         run: |
