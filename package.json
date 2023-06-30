@@ -27,7 +27,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.4",
-    "aws-sdk": "^2.679.0",
+    "aws-sdk": "^2.814.0",
     "prettier": "^2.0.5"
   },
   "devDependencies": {
